@@ -61,19 +61,22 @@ describe 'Airpot' do
 
   it 'can land multiple planes and track them in a random order' do
     airport.capacity_usage(-500) # set capacity usage to 0 for next test
-    peeps = (10..200).to_a.sample(5) # generate random numbers of people
-    plane1 = Plane.new(peeps[0]); plane2 = Plane.new(peeps[1])
-    plane3 = Plane.new(peeps[2]); plane4 = Plane.new(peeps[3])
-    plane5 = Plane.new(peeps[4]) # create 5 planes with randomised peeps
-    airport.reset_planes # reset number of planes
-    testplanes = { 1 => plane1, 2 => plane2, 3 => plane3, 4 => plane4,
-                  5 => plane5 } # create a hash of planes
-    testplanea = [] # array for comparison
-    order = (1..5).to_a.sample(5) # make a random number array
-    order.each { |i| testplanes[i].land(airport)
-                     testplanea.push(testplanes[i]) } # land the land
-    expect(airport.planes).to eq(testplanea) # compare the arrays
-    expect(airport.people).to eq(peeps.inject(0, :+))
+    10.times do # run the test 10 times
+      airport.capacity_usage(-airport.people) # reset capacity
+      peeps = (10..200).to_a.sample(5) # generate random numbers of people
+      plane1 = Plane.new(peeps[0]); plane2 = Plane.new(peeps[1])
+      plane3 = Plane.new(peeps[2]); plane4 = Plane.new(peeps[3])
+      plane5 = Plane.new(peeps[4]) # create 5 planes with randomised peeps
+      airport.reset_planes # reset number of planes
+      testplanes = { 1 => plane1, 2 => plane2, 3 => plane3, 4 => plane4,
+                    5 => plane5 } # create a hash of planes
+      testplanea = [] # array for comparison
+      order = (1..5).to_a.sample(5) # make a random number array
+      order.each { |i| testplanes[i].land(airport)
+                       testplanea.push(testplanes[i]) } # land the land
+      expect(airport.planes).to eq(testplanea) # compare the arrays
+      expect(airport.people).to eq(peeps.inject(0, :+))
+    end
   end
 
 end
