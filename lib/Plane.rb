@@ -11,7 +11,7 @@ class Plane
   def land(airport)
     @airport = airport # assign airport as instance var
     airport.add_plane(self) # add plane to airport
-    airport.capacity_usage(passengers) # add passengers to airport capacity
+    airport.people += passengers # add passengers to airport capacity
     return (airport.weather != 'stormy' && airport.people < airport.capacity ?
             true : false) # pervent landing in adverse conditions
   end

@@ -13,7 +13,7 @@ describe 'Airpot' do
   it 'can change total capacity' do
     10.times do |i| # multiple runs so different numbers are used
       new_cap = 1 + rand(100000) # random number to check for different values
-      airport.change_cap(new_cap)
+      airport.capacity = new_cap
       expect(airport.capacity).to eq(new_cap)
     end
   end
@@ -39,7 +39,7 @@ describe 'Airpot' do
   end
 
   it 'can change weather' do
-    expect(airport).to respond_to(:weather_change)
+    expect(airport).to respond_to(:weather)
   end
 
   it 'has a change in passengers when a plane lands' do
@@ -49,7 +49,7 @@ describe 'Airpot' do
 
   ## multpile landings/ take off tests
   it 'can land multpiple planes and track them in numerical order' do
-    airport.capacity_usage(-150) # set capacity usage to 0 for next test
+    airport.people = 0 # set capacity usage to 0 for next test
     plane1 = Plane.new(100); plane2 = Plane.new(100); plane3 = Plane.new(100)
     plane4 = Plane.new(100); plane5 = Plane.new(100) # create 5 planes
     airport.reset_planes # reset airport before test
@@ -60,9 +60,8 @@ describe 'Airpot' do
   end
 
   it 'can land multiple planes and track them in a random order' do
-    airport.capacity_usage(-500) # set capacity usage to 0 for next test
     10.times do # run the test 10 times
-      airport.capacity_usage(-airport.people) # reset capacity
+      airport.people = 0 # reset capacity
       peeps = (10..200).to_a.sample(5) # generate random numbers of people
       plane1 = Plane.new(peeps[0]); plane2 = Plane.new(peeps[1])
       plane3 = Plane.new(peeps[2]); plane4 = Plane.new(peeps[3])
