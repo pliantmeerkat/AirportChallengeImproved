@@ -4,14 +4,33 @@ describe 'Plane' do # plane feature usit tests
 
   airport = Airport.new(50000) # create an airport object
   plane = Plane.new # create new plane object
+  ## testing with good conditions
   it 'Plane can land' do
     expect(airport.weather).to_not eq('stormy')
-    expect(airport.capacity_usage).to_not eq('full')
+    expect(airport.capacity_usage).to_not eq(airport.capacity)
+    expect(plane.land(airport)).to eq(true)
   end
 
   it 'Plane can take off' do
     expect(airport.weather).to_not eq('stormy')
-    expect(airport.capacity_usage).to_not eq('full')
+    expect(airport.capacity_usage).to_not eq(airport.capacity)
+  end
+
+  # testing with bad conditions
+  it 'does not land if bad waeather' do
+    airport.weather_change('stormy')
+    expect(plane.land(airport)).to eq(false)
+  end
+
+  it 'does not land if airport is full' do
+    airport.weather_change('sunny') # set weather to sunny as its been tested
+    airport.capacity_usage(airport.capacity)
+    expect(plane.land(airport)).to eq(false)
+  end
+
+  it 'does not take off if bad weather' do
+    airport.weather_change('stormy')
+    expect(plane.take_off(airport)).to eq(false)
   end
 
   it 'Plane has taken off' do
@@ -23,10 +42,8 @@ describe 'Plane' do # plane feature usit tests
     expect(airport.planes.count(plane)).to eq(0) # plane should not be in array
   end
 
-
-
-
-
-
+  it 'plane has passengers' do # passegners cannot be added after init
+    expect(plane.passengers).to_not eq(nil) # passengers are not nil
+  end
 
 end
